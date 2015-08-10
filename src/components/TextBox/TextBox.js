@@ -8,7 +8,8 @@ import styles from './TextBox.css';
 class TextBox {
 
   static propTypes = {
-    maxLines: PropTypes.number
+    maxLines: PropTypes.number,
+    label: PropTypes.string.isRequired
   };
 
   static defaultProps = {
@@ -19,10 +20,10 @@ class TextBox {
     return (
       <div className="TextBox">
         {this.props.maxLines > 1 ?
-          <textarea {...this.props} className="TextBox-input" ref="input" key="input" rows={this.props.maxLines} /> :          
+          <textarea {...this.props} className="TextBox-input" ref="input" key="input" rows={this.props.maxLines} /> :
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-            <input {...this.props} className="TextBox-input mdl-textfield__input" type="text" ref="input" key="input"/>
-            <label className="mdl-textfield__label" htmlFor="sample3">Text...</label>
+            <input {...this.props} className="TextBox-input mdl-textfield__input" ref="input" key="input" id="sample3"/>
+            <label className="mdl-textfield__label" htmlFor="sample3">{this.props.label}</label>
           </div>
         }
       </div>
