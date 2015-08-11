@@ -18,12 +18,12 @@ class TextBox {
 
   render() {
     return (
-      <div className="TextBox">
+      <div className="textbox-question">
         {this.props.maxLines > 1 ?
-          <textarea {...this.props} className="TextBox-input" ref="input" key="input" rows={this.props.maxLines} /> :
+          <textarea {...this.props} className="textbox-question-textarea" ref="input" key="input" rows={this.props.maxLines} /> :
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-            <input {...this.props} className="TextBox-input mdl-textfield__input" ref="input" key="input" id="sample3"/>
-            <label className="mdl-textfield__label" htmlFor="sample3">{this.props.label}</label>
+            <input {...this.props} className="textbox-question-input mdl-textfield__input" ref="input" key="input" name={this.props.label}/>
+            <label className="mdl-textfield__label" htmlFor={this.props.label}>{this.props.label}</label>
           </div>
         }
       </div>

@@ -33,11 +33,6 @@ function run() {
     ReactDOM.render(component, container, () => {
       let css = document.getElementById('css');
       css.parentNode.removeChild(css);
-
-      dragula([document.getElementsByClassName('question-list')[0], document.getElementById('workspace')], {
-        revertOnSpill: true,
-        copy: true
-      });
     });
   });
 

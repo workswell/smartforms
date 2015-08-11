@@ -5,6 +5,10 @@
 #workspace {
   padding: 5px;
   min-height: 800px;
+
+  .over {
+    background: #f7f7f7;
+  }
 }
 
 .gu-transit {
