@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ErrorPage from './pages/ErrorPage';
+import Workspace from './components/Workspace';
 
 const router = new Router(on => {
 
@@ -17,6 +18,8 @@ const router = new Router(on => {
     const component = await next();
     return component && <App context={state.context}>{component}</App>;
   });
+
+  on('/', async() => <Workspace />);
 
   on('/contact', async () => <ContactPage />);
 

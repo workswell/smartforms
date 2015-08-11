@@ -15,7 +15,6 @@
     "front-matter": "1.0.0",
     "jade": "1.11.0",
     "lodash": "3.10.1",
-    "normalize.css": "3.0.3",
     "react": "0.14.0-beta3",
     "react-dom": "0.14.0-beta3",
     "react-routing": "0.0.4",

@@ -1,0 +1,6 @@
+{
+  "name": "QuestionType",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./QuestionType.js"
+}

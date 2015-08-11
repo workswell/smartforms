@@ -7,7 +7,7 @@ import withStyles from '../../decorators/withStyles';
 import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
-import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment';
+import QuestionType from'../QuestionType';
 
 @withContext
 @withStyles(styles)
@@ -18,22 +18,14 @@ class App {
     error: PropTypes.object
   };
 
-  componentDidMount() {
-    if (canUseDOM) {
-      import dragula from 'react-dragula';
-      let container = React.findDOMNode(this.refs.questions);
-      dragula([container]);
-    }
-  }
-
   render() {
+    let questionTypes = ['Text input', 'Select list'].map((questionType) => <QuestionType typeName={questionType} />);
     return !this.props.error ? (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--overlay-drawer-button">
         <div className="mdl-layout__drawer">
           <span className="mdl-layout-title">Question Type</span>
-          <nav className="mdl-navigation" ref="questions">
-            <a className="mdl-navigation__link" href="">Text input</a>
-            <a className="mdl-navigation__link" href="">Select list</a>
+          <nav className="mdl-navigation question-list">
+            {questionTypes}
           </nav>
         </div>
         <main className="mdl-layout__content">
