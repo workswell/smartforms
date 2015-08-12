@@ -3,5 +3,7 @@
 import keyMirror from 'fbjs/lib/keyMirror';
 
 export default keyMirror({
-  CREATE_QUESTION: null
+  TEXT_INPUT: null,
+  SELECT_LIST: null,
+  PLACEHOLDER: null
 });

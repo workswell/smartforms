@@ -8,7 +8,7 @@ import withStyles from '../../decorators/withStyles';
 function draggable(node) {
   node.addEventListener('dragstart', function(e) {
     e.dataTransfer.effectAllowed = 'copy';
-    e.dataTransfer.setData('text', this.innerText);
+    e.dataTransfer.setData('questionType', this.innerText);
   });
 }
 
@@ -28,7 +28,7 @@ class QuestionType {
 
   render() {
     return (
-      <a className="mdl-navigation__link question-list__type" href="">
+      <a className="mdl-navigation__link question-list__type" href="" data->
         {this.props.typeName}
       </a>
     );

@@ -4,10 +4,13 @@ import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import styles from './Workspace.css';
 import withStyles from '../../decorators/withStyles';
-import TextBox from '../TextBox/TextBox';
+import Dispatcher from '../../core/Dispatcher';
+import ActionTypes from '../../constants/ActionTypes';
+import WorkspaceQuestionList from '../WorkspaceQuestionList';
+import WorkspaceQuestionStore from '../../stores/WorkspaceQuestionStore';
 
 function dropable(nodes) {
-  [].forEach.call(nodes, (node) => {
+  Array.from(nodes).forEach((node) => {    
     node.addEventListener('dragover', function(e) {
       if (e.preventDefault) e.preventDefault();
       e.dataTransfer.dropEffect = 'copy';
@@ -16,10 +19,12 @@ function dropable(nodes) {
 
     node.addEventListener('dragenter', function(e) {
       this.classList.add('over');
+      console.log('dragenter ' +  this.dataset.reactid);
     });
 
     node.addEventListener('dragleave', function(e) {
       this.classList.remove('over');
+      console.log('dragleave ' + this.dataset.reactid);
     });
 
     node.addEventListener('drop', function(e) {
@@ -28,24 +33,52 @@ function dropable(nodes) {
 
       this.classList.remove('over');
 
-      this.parentNode.insertBefore(document.createElement('h3'), this);
+      // let emptyBlock = document.createElement('div');
+      // emptyBlock.innerHTML = '<div class="empty-block-question">This paragraph replaced the original div.</div>';
+
+      // this.parentNode.insertBefore(emptyBlock.firstChild, this);
+      Dispatcher.dispatch({
+        actionType: ActionTypes.CREATE_QUESTION,
+        data: {
+          qtype: e.dataTransfer.getData('questionType'),
+          qid: this.dataset.qid
+        }
+      });
 
       return false;
     });
   })
 }
 
+function getWorkspaceQuestionState () {
+  return {questions: WorkspaceQuestionStore.getAll()};
+}
+
 @withStyles(styles)
-class Workspace {
+class Workspace extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = getWorkspaceQuestionState();
+    this._onChange = this._onChange.bind(this);
+  }
+
   componentDidMount() {
     dropable(findDOMNode(this).querySelectorAll('[class$="-question"]'));
+    WorkspaceQuestionStore.addChangeListener(this._onChange);
+  }
+
+  componentWillUnmount() {
+    WorkspaceQuestionStore.removeChangeListener(this._onChange);
+  }
+
+  _onChange() {
+    this.setState(getWorkspaceQuestionState());
   }
 
   render() {
     return (
       <div id="workspace">
-        <TextBox label="username"/>
-        <TextBox label="password" type="password"/>
+        <WorkspaceQuestionList list={this.state.questions} />
       </div>
     );
   }

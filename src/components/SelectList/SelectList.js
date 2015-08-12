@@ -2,10 +2,10 @@
 
 import React, { PropTypes } from 'react';
 import withStyles from '../../decorators/withStyles';
-import styles from './TextBox.css';
+import styles from './SelectList.css';
 
 @withStyles(styles)
-class TextBox {
+class SelectList {
 
   static propTypes = {
     maxLines: PropTypes.number,
@@ -13,13 +13,12 @@ class TextBox {
   };
 
   static defaultProps = {
-    maxLines: 1,
-    label: 'Textbox'
+    maxLines: 1
   };
 
   render() {
     return (
-      <div className="textbox-question" data-qid={this.props.qid}>
+      <div className="textbox-question">
         {this.props.maxLines > 1 ?
           <textarea {...this.props} className="textbox-question-textarea" ref="input" key="input" rows={this.props.maxLines} /> :
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
@@ -33,4 +32,4 @@ class TextBox {
 
 }
 
-export default TextBox;
+export default SelectList;

@@ -8,6 +8,7 @@ import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
 import QuestionType from'../QuestionType';
+import QuestionTypes from '../../constants/QuestionTypes';
 
 @withContext
 @withStyles(styles)
@@ -19,7 +20,7 @@ class App {
   };
 
   render() {
-    let questionTypes = ['Text input', 'Select list'].map((questionType) => <QuestionType typeName={questionType} />);
+    let questionTypes = Object.keys(QuestionTypes).map((questionType) => <QuestionType typeName={questionType} />);
     return !this.props.error ? (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--overlay-drawer-button">
         <div className="mdl-layout__drawer">

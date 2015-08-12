@@ -1,0 +1,6 @@
+{
+  "name": "WorkspaceQuestionList",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./WorkspaceQuestionList.js"
+}
