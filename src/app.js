@@ -7,7 +7,6 @@ import router from './router';
 import Dispatcher from './core/Dispatcher';
 import Location from './core/Location';
 import ActionTypes from './constants/ActionTypes';
-import dragula from 'react-dragula';
 
 const container = document.getElementById('app');
 const context = {
