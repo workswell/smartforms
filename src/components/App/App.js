@@ -20,7 +20,7 @@ class App {
   };
 
   render() {
-    let questionTypes = Object.keys(QuestionTypes).map((questionType) => <QuestionType typeName={questionType} />);
+    let questionTypes = Object.keys(QuestionTypes).map((questionType) => <QuestionType key={questionType} typeName={questionType} />);
     return !this.props.error ? (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--overlay-drawer-button">
         <div className="mdl-layout__drawer">

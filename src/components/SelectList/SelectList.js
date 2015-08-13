@@ -1,35 +1,29 @@
 /*! React Starter Kit | MIT License | http://www.reactstarterkit.com/ */
 
 import React, { PropTypes } from 'react';
+import BaseQuestion from '../BaseQuestion';
 import withStyles from '../../decorators/withStyles';
 import styles from './SelectList.css';
 
 @withStyles(styles)
-class SelectList {
-
-  static propTypes = {
-    maxLines: PropTypes.number,
-    label: PropTypes.string.isRequired
-  };
+class SelectList extends BaseQuestion {
 
   static defaultProps = {
-    maxLines: 1
-  };
+    label: 'SelectList',
+    options: ['A', 'C', 'X']
+  }
 
   render() {
     return (
-      <div className="textbox-question">
-        {this.props.maxLines > 1 ?
-          <textarea {...this.props} className="textbox-question-textarea" ref="input" key="input" rows={this.props.maxLines} /> :
-          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-            <input {...this.props} className="textbox-question-input mdl-textfield__input" ref="input" key="input" name={this.props.label}/>
-            <label className="mdl-textfield__label" htmlFor={this.props.label}>{this.props.label}</label>
-          </div>
-        }
+      <div className="selectlist-question" data-qid={this.props.qid}>
+        <select>{this.props.options.map( option => <option>{option}</option>)}</select>
       </div>
     );
   }
-
 }
+
+SelectList.propTypes = Object.assign({
+  options: PropTypes.array
+}, BaseQuestion.propTypes);
 
 export default SelectList;

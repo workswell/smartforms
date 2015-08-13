@@ -7,8 +7,12 @@ import styles from './Placeholder.css';
 
 @withStyles(styles)
 class Placeholder extends BaseQuestion {
+  static defaultProps = {
+    label: 'Placeholder'
+  }
+
   render() {
-    return <div className="placeholder-question" data-qid={this.props.qid}></div>;
+    return <div className="placeholder-question" data-qid={this.props.qid}>Placeholder</div>;
   }
 }
 

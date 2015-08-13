@@ -20,12 +20,14 @@ class WorkspaceQuestionList {
 
       switch (question.type) {
         case QuestionTypes.TEXT_INPUT:
-        control = <TextBox {...question.props}/>
+        control = <TextBox key={question.props.qid} {...question.props}/>
         break;
         case QuestionTypes.SELECT_LIST:
-        control = <SelectList {...question.props}/>
+        control = <SelectList key={question.props.qid} {...question.props}/>
+        break;
         case QuestionTypes.PLACEHOLDER:
-        control = <Placeholder {...question.props}/>
+        control = <Placeholder key={question.props.qid} {...question.props}/>
+        break;
         default:
         break;
       }
