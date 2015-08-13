@@ -86,8 +86,9 @@ function updateAll(updates) {
  * Delete a TODO item.
  * @param  {string} id
  */
-function destroy(id) {
-  delete _todos[id];
+function destroy(qid) {
+  let index = _workspaceQuestions.findIndex(item => item.props.qid == qid);
+  _workspaceQuestions.splice(index, 1);
 }
 
 /**
@@ -140,6 +141,11 @@ Dispatcher.register(function(action) {
           WorkspaceQuestionStore.emitChange();
         }
       break;
+    case ActionTypes.DELETE_QUESTION:
+      if (action.qid) {
+        destroy(action.qid);
+        WorkspaceQuestionStore.emitChange();
+      }
     default:
       // no op
   }

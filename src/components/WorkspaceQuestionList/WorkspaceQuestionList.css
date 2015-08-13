@@ -1,12 +1,13 @@
 @import '../variables.css';
 
 .workspace-question-list {
-    [class*="-question"] {
-        padding: 5px;
-        border: 1px solid var(--gray-light);
-        margin-bottom: 5px;
-        &:nth-child(2n) {
-            background-color: var(--gray-lighter);
-        }
+}
+
+.question-wrapper {
+    display: flex;
+    border: 1px solid var(--gray-light);
+    margin-bottom: 5px;
+    &:nth-child(2n) {
+        background-color: var(--gray-lighter);
     }
 }
