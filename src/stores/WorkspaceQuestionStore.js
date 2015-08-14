@@ -17,7 +17,7 @@ import QuestionTypes from '../constants/QuestionTypes';
 
 let CHANGE_EVENT = 'change';
 
-let qid = 0;
+let qid = 1;
 
 let _workspaceQuestions = [];
 
