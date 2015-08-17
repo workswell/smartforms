@@ -4,13 +4,7 @@ import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import styles from './QuestionType.css';
 import withStyles from '../../decorators/withStyles';
-
-function draggable(node) {
-  node.addEventListener('dragstart', function(e) {
-    e.dataTransfer.effectAllowed = 'copy';
-    e.dataTransfer.setData('questionType', this.innerText);
-  });
-}
+import $ from 'jquery';
 
 @withStyles(styles)
 class QuestionType {
@@ -23,7 +17,14 @@ class QuestionType {
   }
 
   componentDidMount() {
-    draggable(findDOMNode(this));
+    $(findDOMNode(this)).draggable({
+      appendTo: 'body',
+      helper: "clone"
+    })
+  }
+
+  componentWillUnmount() {
+    $(findDOMNode(this)).draggable('destroy')
   }
 
   render() {

@@ -10,7 +10,9 @@ import WorkspaceQuestionStore from '../../stores/WorkspaceQuestionStore';
 import WorkspacePointerStore from '../../stores/WorkspacePointerStore';
 import Dispatcher from '../../core/Dispatcher';
 import ActionTypes from '../../constants/ActionTypes';
+import QuestionTypes from '../../constants/QuestionTypes';
 import { dropable, undropable } from '../../core/utilities';
+import $ from 'jquery';
 
 function getWorkspaceQuestionState () {
   return WorkspaceQuestionStore.getAll();
@@ -36,13 +38,27 @@ class Workspace extends React.Component{
   componentDidMount() {
     WorkspaceQuestionStore.addChangeListener(this._onQuestionChange);
     WorkspacePointerStore.addChangeListener(this._onPointerChange);
-    dropable(findDOMNode(this));
+    $('.workspace-question-list').droppable({
+      activeClass: 'ui-state-default',
+      hoverClass: 'ui-state-hover',
+      accept: ':not(.ui-sortable-helper)',
+      drop: function( event, ui ) {
+        console.log(event, ui);
+        Dispatcher.dispatch({
+          actionType: ActionTypes.CREATE_QUESTION,
+          data: {
+            qid: 1,
+            qtype: QuestionTypes[$(ui.helper).text()]
+          }
+        });
+      }
+    })
   }
 
   componentWillUnmount() {
     WorkspaceQuestionStore.removeChangeListener(this._onQuestionChange);
     WorkspacePointerStore.removeChangeListener(this._onPointerChange);
-    undropable(findDOMNode(this));
+    $( '.workspace-question-list' ).droppable('destroy');
   }
 
   _onQuestionChange() {
@@ -60,7 +76,6 @@ class Workspace extends React.Component{
   render() {
     return (
       <div id="workspace">
-        <Pointer {...this.state.pointer}/>
         <WorkspaceQuestionList list={this.state.questions} />
       </div>
     );

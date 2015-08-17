@@ -3,6 +3,7 @@
 import 'babel/polyfill';
 import ReactDOM from 'react-dom';
 import FastClick from 'fastclick';
+import $ from 'jquery';
 import router from './router';
 import Dispatcher from './core/Dispatcher';
 import Location from './core/Location';
@@ -28,6 +29,9 @@ const context = {
 };
 
 function run() {
+  require('jquery-ui/draggable');
+  require('jquery-ui/droppable');
+
   router.dispatch({ path: window.location.pathname, context }, (state, component) => {
     ReactDOM.render(component, container, () => {
       let css = document.getElementById('css');
