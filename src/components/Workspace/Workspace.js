@@ -38,21 +38,25 @@ class Workspace extends React.Component{
   componentDidMount() {
     WorkspaceQuestionStore.addChangeListener(this._onQuestionChange);
     WorkspacePointerStore.addChangeListener(this._onPointerChange);
-    $('.workspace-question-list').droppable({
-      activeClass: 'ui-state-default',
-      hoverClass: 'ui-state-hover',
-      accept: ':not(.ui-sortable-helper)',
-      drop: function( event, ui ) {
-        console.log(event, ui);
-        Dispatcher.dispatch({
-          actionType: ActionTypes.CREATE_QUESTION,
-          data: {
-            qid: 1,
-            qtype: QuestionTypes[$(ui.helper).text()]
-          }
-        });
-      }
-    })
+    // $('#workspace').droppable({
+    //   activeClass: 'ui-state-default',
+    //   hoverClass: 'ui-state-hover',
+    //   accept: ':not(.ui-sortable-helper)',
+    //   drop: function( event, ui ) {
+    //     console.log(event, ui);
+    //     Dispatcher.dispatch({
+    //       actionType: ActionTypes.CREATE_QUESTION,
+    //       data: {
+    //         qid: 1,
+    //         qtype: QuestionTypes[$(ui.helper).text()]
+    //       }
+    //     });
+    //   }
+    // })
+    // 
+    $('.workspace-question-list').sortable({
+      revert: true
+    });
   }
 
   componentWillUnmount() {

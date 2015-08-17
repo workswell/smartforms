@@ -31,6 +31,7 @@ const context = {
 function run() {
   require('jquery-ui/draggable');
   require('jquery-ui/droppable');
+  require('jquery-ui/sortable');
 
   router.dispatch({ path: window.location.pathname, context }, (state, component) => {
     ReactDOM.render(component, container, () => {

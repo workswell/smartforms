@@ -18,6 +18,7 @@ class QuestionType {
 
   componentDidMount() {
     $(findDOMNode(this)).draggable({
+      connectToSortable: '.workspace-question-list',
       appendTo: 'body',
       helper: "clone"
     })
