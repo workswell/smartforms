@@ -5,13 +5,6 @@ import { findDOMNode } from 'react-dom';
 import styles from './QuestionType.css';
 import withStyles from '../../decorators/withStyles';
 
-function draggable(node) {
-  node.addEventListener('dragstart', function(e) {
-    e.dataTransfer.effectAllowed = 'copy';
-    e.dataTransfer.setData('questionType', this.innerText);
-  });
-}
-
 @withStyles(styles)
 class QuestionType {
   static propTypes = {
@@ -20,10 +13,6 @@ class QuestionType {
 
   static defaultProps = {
     typeName: 'Unknown type'
-  }
-
-  componentDidMount() {
-    draggable(findDOMNode(this));
   }
 
   render() {

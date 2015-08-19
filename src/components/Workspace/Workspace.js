@@ -10,7 +10,6 @@ import WorkspaceQuestionStore from '../../stores/WorkspaceQuestionStore';
 import WorkspacePointerStore from '../../stores/WorkspacePointerStore';
 import Dispatcher from '../../core/Dispatcher';
 import ActionTypes from '../../constants/ActionTypes';
-import { dropable, undropable } from '../../core/utilities';
 
 function getWorkspaceQuestionState () {
   return WorkspaceQuestionStore.getAll();
@@ -30,19 +29,17 @@ class Workspace extends React.Component{
     };
 
     this._onQuestionChange = this._onQuestionChange.bind(this);
-    this._onPointerChange = this._onPointerChange.bind(this);
+    //this._onPointerChange = this._onPointerChange.bind(this);
   }
 
   componentDidMount() {
     WorkspaceQuestionStore.addChangeListener(this._onQuestionChange);
-    WorkspacePointerStore.addChangeListener(this._onPointerChange);
-    dropable(findDOMNode(this));
+    //WorkspacePointerStore.addChangeListener(this._onPointerChange);
   }
 
   componentWillUnmount() {
     WorkspaceQuestionStore.removeChangeListener(this._onQuestionChange);
-    WorkspacePointerStore.removeChangeListener(this._onPointerChange);
-    undropable(findDOMNode(this));
+    //WorkspacePointerStore.removeChangeListener(this._onPointerChange);
   }
 
   _onQuestionChange() {
@@ -60,7 +57,6 @@ class Workspace extends React.Component{
   render() {
     return (
       <div id="workspace">
-        <Pointer {...this.state.pointer}/>
         <WorkspaceQuestionList list={this.state.questions} />
       </div>
     );

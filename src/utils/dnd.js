@@ -4,6 +4,8 @@ import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment';
 import Dispatcher from '../core/Dispatcher';
 import ActionTypes from '../constants/ActionTypes';
 
+let isDragging = false;
+
 function dragover(e) {
   if (e.preventDefault) e.preventDefault();
   e.dataTransfer.dropEffect = 'copy';
@@ -30,6 +32,37 @@ function drop(e) {
 
   this.classList.remove('over');
   return false;
+}
+
+function mousedown(e) {
+  let ignore = (e.which !== 0 && e.which !== 1) || e.metaKey || e.ctrlKey;
+  // we only care about honest-to-god left clicks and touch events
+  if (ignore) return;
+
+  let item = e.target;
+  let context = _canStart(item);
+  if (!context) {
+    return;
+  }
+  _grabbed = context;
+  _eventualMovements();
+  if (e.type === 'mousedown') e.preventDefault();
+}
+
+function _canStart(item) {
+  if (isDragging) return;
+
+  let source = item.parentElement;
+  if (!source) return;
+
+  return {
+    item: item,
+    source: source
+  };
+}
+
+function _eventualMovements() {
+
 }
 
 function $(node) {
@@ -61,5 +94,15 @@ export default {
     .off('dragenter', dragenter)
     .off('dragleave', dragleave)
     .off('drop', drop);
+  },
+
+  draggable(node) {
+    $(node)
+    .on('mousedown', mousedown);
+  },
+
+  undraggable(node) {
+    $(node)
+    .off('mousedown', mousedown);
   }
 };
