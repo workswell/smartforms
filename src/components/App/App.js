@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
-import dragula from 'dragula';
+import dragula from 'react-dragula';
 import styles from './App.css';
 import withContext from '../../decorators/withContext';
 import withStyles from '../../decorators/withStyles';
@@ -30,35 +30,57 @@ class App {
       copy: true
     });
 
-    drake.on('drop', (item) => {
-      data = {
-        qid: item.nextElementSibling.childNodes[1].dataset.qid,
-        qtype: QuestionTypes[item.text]
-      }
-    })
+    drake.on('shadow', (item, dropTarget, reference)=> {
+      console.log('shadow');
+      if (reference && reference.dataset.qid !== '-1') {
+        Dispatcher.dispatch({
+          actionType: ActionTypes.DELETE_QUESTION,
+          qid: -1
+        });
 
-    drake.on('dragend', () => {
+        console.log('Dispatcher.DELETE_QUESTION');
+
+        data = {
+          qid: -1,
+          qtype: QuestionTypes[item.textContent],
+          refQid: reference.dataset.qid
+        }
+
+        Dispatcher.dispatch({
+          actionType: ActionTypes.CREATE_QUESTION,
+          data
+        });
+
+        console.log('Dispatcher.CREATE_QUESTION');
+      }
+    });
+
+    drake.on('drop', ()=>{
       Dispatcher.dispatch({
-        actionType: ActionTypes.CREATE_QUESTION,
-        data
+        actionType: ActionTypes.UPDATE_QUESTION,
+        data: {
+          qid: -1
+        }
       });
-    })
+    });
   }
 
   render() {
     let questionTypes = Object.keys(QuestionTypes).map((questionType) => <QuestionType key={questionType} typeName={questionType} />);
     return !this.props.error ? (
-      <div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--overlay-drawer-button">
-        <div className="mdl-layout__drawer">
-          <span className="mdl-layout-title">Question Type</span>
-          <nav className="mdl-navigation question-list" ref="questionList">
-            {questionTypes}
-          </nav>
-        </div>
-        <main className="mdl-layout__content">
+      <div>
+        <div className="pure-g">
+          <div className="pure-u-1-5">
+            <div class="pure-menu">
+              <span className="pure-menu-heading">Question Type</span>
+              <ul class="pure-menu-list" ref="questionList">
+                {questionTypes}
+              </ul>
+            </div>
+          </div>
           <div className="page-content">{this.props.children}</div>
-        </main>
-        <Footer/>
+        </div>
+        <Footer/>        
       </div>
     ) : this.props.children;
   }

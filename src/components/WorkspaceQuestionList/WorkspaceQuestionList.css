@@ -7,7 +7,7 @@
     display: flex;
     border: 1px solid var(--gray-light);
     margin-bottom: 5px;
-    &:nth-child(2n) {
-        background-color: var(--gray-lighter);
+    &[data-qid="-1"] {
+        background-color: rgba(0, 0, 0, 0.1);
     }
 }

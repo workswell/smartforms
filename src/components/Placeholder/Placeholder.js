@@ -12,7 +12,7 @@ class Placeholder extends BaseQuestion {
   }
 
   render() {
-    return <div className="placeholder-question" data-qid={this.props.qid}>Placeholder</div>;
+    return <div className="placeholder-question">Placeholder</div>;
   }
 }
 

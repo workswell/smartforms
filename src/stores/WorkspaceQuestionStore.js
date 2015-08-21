@@ -51,14 +51,19 @@ _workspaceQuestions.push({
  * @param  {string} text The content of the TODO
  */
 function create(data) {
-  let index = _workspaceQuestions.findIndex(item => item.props.qid == data.qid);
+  let index = _workspaceQuestions.findIndex(item => item.props.qid == data.refQid);
 
-  _workspaceQuestions.splice(index, 0, {
-    type: data.qtype,
-    props: {
-      qid: qid++
-    }
-  });
+  //console.log('Store.willcreate', data);
+  if (index > -1) {
+    _workspaceQuestions.splice(index, 0, {
+      type: data.qtype,
+      props: {
+        qid: data.qid || qid++
+      }
+    });
+
+    //console.log('Store.created');
+  }  
 }
 
 /**
@@ -67,8 +72,10 @@ function create(data) {
  * @param {object} updates An object literal containing only the data to be
  *     updated.
  */
-function update(id, updates) {
-  _todos[id] = assign({}, _todos[id], updates);
+function update(data) {
+  if (data.qid === -1) {
+    
+  }
 }
 
 /**
@@ -88,7 +95,10 @@ function updateAll(updates) {
  */
 function destroy(qid) {
   let index = _workspaceQuestions.findIndex(item => item.props.qid == qid);
-  _workspaceQuestions.splice(index, 1);
+  if (index > -1) {
+    _workspaceQuestions.splice(index, 1);
+    //console.log('Store.destroy');
+  }
 }
 
 /**
@@ -144,6 +154,11 @@ Dispatcher.register(function(action) {
     case ActionTypes.DELETE_QUESTION:
       if (action.qid) {
         destroy(action.qid);
+        WorkspaceQuestionStore.emitChange();
+      }
+    case ActionTypes.UPDATE_QUESTION:
+      if (action.data) {
+        update(action.data);
         WorkspaceQuestionStore.emitChange();
       }
     default:

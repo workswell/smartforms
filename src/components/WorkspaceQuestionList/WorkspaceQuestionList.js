@@ -43,7 +43,7 @@ class WorkspaceQuestionList {
         break;
       }
 
-      return (<div className="question-wrapper" key={question.props.qid}>
+      return (<div className="question-wrapper" data-qid={question.props.qid} key={question.props.qid}>
                 <Handler/>
                 {control}
                 <Actions handleClick={this.handleClick} {...question.props}/>

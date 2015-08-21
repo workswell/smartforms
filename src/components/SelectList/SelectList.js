@@ -15,7 +15,7 @@ class SelectList extends BaseQuestion {
 
   render() {
     return (
-      <div className="selectlist-question" data-qid={this.props.qid}>
+      <div className="selectlist-question">
         <select>{this.props.options.map( option => <option>{option}</option>)}</select>
       </div>
     );

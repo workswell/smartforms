@@ -17,9 +17,9 @@ class QuestionType {
 
   render() {
     return (
-      <a className="mdl-navigation__link question-list__type" href="" data->
-        {this.props.typeName}
-      </a>
+      <li className="pure-menu-item">
+        <a href="" class="pure-menu-link">{this.props.typeName}</a>
+      </li>
     );
   }
 

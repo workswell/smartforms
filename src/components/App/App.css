@@ -1,5 +1,3 @@
-@import '../../../node_modules/material-design-lite/material.css';
-
 /*! React Starter Kit | MIT License | http://www.reactstarterkit.com/ */
 
 @import '../variables.css';
@@ -169,4 +167,15 @@ textarea {
   h3 {
     page-break-after: avoid;
   }
+}
+
+body .gu-mirror {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: opacity 0.4s ease-in-out;
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  position: absolute;
 }
