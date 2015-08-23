@@ -29,7 +29,7 @@ class TextBox extends BaseQuestion {
         {this.props.maxLines > 1 ?
           <textarea {...this.props} className="textbox-question-textarea" ref="input" key="input" rows={this.props.maxLines} /> :
           <div ref="textbox">
-            <input {...this.props} className="textbox-question-input mdl-textfield__input" ref="input" key="input" name={this.props.label} placeholder={this.props.label}/>
+            <input {...this.props} className="textbox-question-input" ref="input" key="input" name={this.props.label} placeholder={this.props.label}/>
           </div>
         }
       </div>

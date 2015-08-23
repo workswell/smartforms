@@ -51,19 +51,22 @@ _workspaceQuestions.push({
  * @param  {string} text The content of the TODO
  */
 function create(data) {
-  let index = _workspaceQuestions.findIndex(item => item.props.qid == data.refQid);
-
-  //console.log('Store.willcreate', data);
-  if (index > -1) {
-    _workspaceQuestions.splice(index, 0, {
+  let index,
+    newQuestion = {
       type: data.qtype,
       props: {
         qid: data.qid || qid++
       }
-    });
+    };
 
-    //console.log('Store.created');
-  }  
+  if (data.refQid) {
+    index = _workspaceQuestions.findIndex(item => item.props.qid == data.refQid);
+    if (index > -1) {
+      _workspaceQuestions.splice(index, 0, newQuestion);
+    }
+  } else {
+    _workspaceQuestions.push(newQuestion);
+  }
 }
 
 /**
@@ -74,7 +77,21 @@ function create(data) {
  */
 function update(data) {
   if (data.qid === -1) {
-    
+    let index = _workspaceQuestions.findIndex(item => item.props.qid === -1);
+    if (index > -1) _workspaceQuestions[index].props.qid = qid++;
+  } else {
+    let index = _workspaceQuestions.findIndex(item => item.props.qid === +data.qid);
+    if (index > -1) {
+      let item = _workspaceQuestions.splice(index, 1);
+      if (item.length === 1) {
+        if (data.refQid) {
+          index = _workspaceQuestions.findIndex(item => item.props.qid === +data.refQid);
+          if (index > -1) _workspaceQuestions.splice(index, 0, item[0]);
+        } else {
+          _workspaceQuestions.push(item[0]);
+        }
+      }
+    }
   }
 }
 

@@ -18,7 +18,7 @@ class QuestionType {
   render() {
     return (
       <li className="pure-menu-item">
-        <a href="" class="pure-menu-link">{this.props.typeName}</a>
+        <a href="" className="pure-menu-link">{this.props.typeName}</a>
       </li>
     );
   }

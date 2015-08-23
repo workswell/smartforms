@@ -1,13 +1,11 @@
 @import '../variables.css';
 
 .workspace-question-list {
+    min-height: 40px;
 }
 
 .question-wrapper {
     display: flex;
     border: 1px solid var(--gray-light);
     margin-bottom: 5px;
-    &[data-qid="-1"] {
-        background-color: rgba(0, 0, 0, 0.1);
-    }
 }

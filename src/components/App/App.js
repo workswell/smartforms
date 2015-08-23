@@ -27,31 +27,44 @@ class App {
     let data,
       drake = dragula({
       containers: [findDOMNode(this.refs.questionList), document.getElementsByClassName('workspace-question-list')[0]],
-      copy: true
+      moves: function (el, source, handle) {
+        if (source.className === 'workspace-question-list') {
+          drake.copy = false;
+          return handle.className === 'question-wrapper__handler';
+        } else {
+          drake.copy = true;
+          return true;
+        }
+      }
     });
 
     drake.on('shadow', (item, dropTarget, reference)=> {
-      console.log('shadow');
-      if (reference && reference.dataset.qid !== '-1') {
-        Dispatcher.dispatch({
-          actionType: ActionTypes.DELETE_QUESTION,
-          qid: -1
-        });
+      if (!reference || reference && reference.dataset.qid !== '-1') {
+        if (drake.copy) {
+          Dispatcher.dispatch({
+            actionType: ActionTypes.DELETE_QUESTION,
+            qid: -1
+          });
 
-        console.log('Dispatcher.DELETE_QUESTION');
+          data = {
+            qid: -1,
+            qtype: QuestionTypes[item.textContent],
+            refQid: reference ? reference.dataset.qid : null
+          }
 
-        data = {
-          qid: -1,
-          qtype: QuestionTypes[item.textContent],
-          refQid: reference.dataset.qid
+          Dispatcher.dispatch({
+            actionType: ActionTypes.CREATE_QUESTION,
+            data
+          });
+        } else {
+          Dispatcher.dispatch({
+            actionType: ActionTypes.UPDATE_QUESTION,
+            data: {
+              qid: item.dataset.qid,
+              refQid: reference ? reference.dataset.qid : null
+            }
+          });
         }
-
-        Dispatcher.dispatch({
-          actionType: ActionTypes.CREATE_QUESTION,
-          data
-        });
-
-        console.log('Dispatcher.CREATE_QUESTION');
       }
     });
 
@@ -63,6 +76,20 @@ class App {
         }
       });
     });
+
+    drake.on('cancel', ()=>{
+      Dispatcher.dispatch({
+        actionType: ActionTypes.DELETE_QUESTION,
+        qid: -1
+      });
+    });
+
+    drake.on('remove', ()=>{
+      Dispatcher.dispatch({
+        actionType: ActionTypes.DELETE_QUESTION,
+        qid: -1
+      });
+    });
   }
 
   render() {
@@ -71,16 +98,16 @@ class App {
       <div>
         <div className="pure-g">
           <div className="pure-u-1-5">
-            <div class="pure-menu">
+            <div className="pure-menu">
               <span className="pure-menu-heading">Question Type</span>
-              <ul class="pure-menu-list" ref="questionList">
+              <ul className="pure-menu-list" ref="questionList">
                 {questionTypes}
               </ul>
             </div>
           </div>
-          <div className="page-content">{this.props.children}</div>
+          <div className="page-content pure-u-4-5">{this.props.children}</div>
         </div>
-        <Footer/>        
+        <Footer/>
       </div>
     ) : this.props.children;
   }

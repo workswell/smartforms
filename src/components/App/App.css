@@ -169,7 +169,7 @@ textarea {
   }
 }
 
-body .gu-mirror {
+.gu-mirror {
   margin: 10px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.2);
@@ -178,4 +178,12 @@ body .gu-mirror {
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
   position: absolute;
+}
+
+.gu-hide {
+  display: none;
+}
+
+.gu-transit {
+  background-color: rgba(0, 0, 0, 0.1);
 }
