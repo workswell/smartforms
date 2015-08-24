@@ -9,6 +9,7 @@ import withStyles from '../../decorators/withStyles';
 import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
+import Pointer from '../Pointer';
 import QuestionType from'../QuestionType';
 import QuestionTypes from '../../constants/QuestionTypes';
 import ActionTypes from '../../constants/ActionTypes';
@@ -16,7 +17,15 @@ import Dispatcher from '../../core/Dispatcher';
 
 @withContext
 @withStyles(styles)
-class App {
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      pointerType: null,
+      pointerLeft: 0,
+      pointerTop: 0
+    };
+  }
 
   static propTypes = {
     children: PropTypes.element.isRequired,
@@ -35,6 +44,23 @@ class App {
           drake.copy = true;
           return true;
         }
+      }
+    });
+
+    drake.on('cloned', (left, top, type)=>{
+      if (type === 'mirror') {
+        this.setState({pointerType: top.textContent});
+      } else if (type === 'position') {
+        this.setState({
+          pointerLeft: left,
+          pointerTop: top
+        });
+      } else if (type === 'remove') {
+        this.setState({
+          pointerType: null,
+          pointerLeft: 0,
+          pointerTop: 0
+        });
       }
     });
 
@@ -108,6 +134,7 @@ class App {
           <div className="page-content pure-u-4-5">{this.props.children}</div>
         </div>
         <Footer/>
+        <Pointer type={this.state.pointerType} left={this.state.pointerLeft} top={this.state.pointerTop}/>
       </div>
     ) : this.props.children;
   }

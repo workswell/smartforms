@@ -21,7 +21,7 @@ class Actions{
 
   render() {
     return (<div className="question-wrapper__actions">
-            <button onClick={this.handleClick} className="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
+            <button onClick={this.handleClick} className="pure-button">
               <i className="material-icons">delete</i>
             </button>
           </div>);
