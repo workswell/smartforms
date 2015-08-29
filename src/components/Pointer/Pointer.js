@@ -28,6 +28,7 @@ class Pointer{
       control = <Placeholder/>
     break;
       default:
+      control = <span>Unknown control</span>
       break;
     }
 
