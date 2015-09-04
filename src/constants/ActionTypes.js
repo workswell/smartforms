@@ -6,5 +6,6 @@ export default keyMirror({
   CREATE_QUESTION: null,
   DELETE_QUESTION: null,
   UPDATE_QUESTION: null,
-  UPDATE_POINTER: null
+  UPDATE_POINTER: null,
+  SELECTED_QUESTION: null
 });

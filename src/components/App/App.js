@@ -9,6 +9,7 @@ import withStyles from '../../decorators/withStyles';
 import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
+import Sidebar from '../Sidebar';
 import QuestionType from'../QuestionType';
 import QuestionTypes from '../../constants/QuestionTypes';
 import ActionTypes from '../../constants/ActionTypes';
@@ -105,7 +106,10 @@ class App {
               </ul>
             </div>
           </div>
-          <div className="page-content pure-u-4-5">{this.props.children}</div>
+          <div className="page-content pure-u-3-5">{this.props.children}</div>
+          <div className="pure-u-1-5">
+            <Sidebar/>
+          </div>
         </div>
         <Footer/>
       </div>
