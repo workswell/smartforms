@@ -7,13 +7,13 @@ import styles from './Placeholder.css';
 
 @withStyles(styles)
 class Placeholder extends BaseQuestion {
-  static defaultProps = {
-    label: 'Placeholder'
-  }
-
   render() {
-    return <div className="placeholder-question">Placeholder</div>;
+    return <div className="placeholder-question" onClick={this.handleClick}>Placeholder</div>;
   }
+}
+
+Placeholder.defaultProps = {
+  label: 'Placeholder'
 }
 
 export default Placeholder;

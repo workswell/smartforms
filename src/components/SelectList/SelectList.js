@@ -7,19 +7,18 @@ import styles from './SelectList.css';
 
 @withStyles(styles)
 class SelectList extends BaseQuestion {
-
-  static defaultProps = {
-    label: 'SelectList',
-    options: ['A', 'C', 'X']
-  }
-
   render() {
     return (
-      <div className="selectlist-question">
+      <div className="selectlist-question" onClick={this.handleClick}>
         <select>{this.props.options.map( option => <option>{option}</option>)}</select>
       </div>
     );
   }
+}
+
+SelectList.defaultProps = {
+  label: 'SelectList',
+  options: ['A', 'C', 'X']
 }
 
 SelectList.propTypes = Object.assign({

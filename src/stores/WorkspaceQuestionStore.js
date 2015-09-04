@@ -178,6 +178,10 @@ Dispatcher.register(function(action) {
         update(action.data);
         WorkspaceQuestionStore.emitChange();
       }
+    case ActionTypes.SELECTED_QUESTION:
+      if (action.props) {
+        console.log('props', action.props);
+      }
     default:
       // no op
   }
