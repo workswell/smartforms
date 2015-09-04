@@ -28,7 +28,9 @@ class TextBox extends BaseQuestion {
       <div className="textbox-question">
         {this.props.maxLines > 1 ?
           <textarea {...this.props} className="textbox-question-textarea" ref="input" key="input" rows={this.props.maxLines} /> :
-          <input {...this.props} className="textbox-question-input" ref="input" key="input" name={this.props.label} placeholder={this.props.label}/>
+          <div ref="textbox">
+            <input {...this.props} className="textbox-question-input" ref="input" key="input" name={this.props.label} placeholder={this.props.label}/>
+          </div>
         }
       </div>
     );
