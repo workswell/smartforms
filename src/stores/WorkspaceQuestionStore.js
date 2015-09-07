@@ -28,15 +28,18 @@ const DEFAULT_PROPS = {
 }
 
 
-let CHANGE_EVENT = 'change';
-
-let qid = 1;
-
-let _workspaceQuestions = [];
+let QUESTION_CHANGE_EVENT = 'question-change',
+  SIDEBAR_CHANGE_EVENT = 'sidebar-change',
+  qid = 1,
+  _workspaceQuestions = [];
 
 //Set three default questions
 create({
-  qtype: QuestionTypes.TEXT_INPUT
+  qtype: QuestionTypes.TEXT_INPUT,
+  props: {
+    label: 'username',
+    placeholder: 'username'
+  }
 });
 
 create({
@@ -44,45 +47,16 @@ create({
 });
 
 create({
-  qtype: QuestionTypes.TEXT_INPUT
-});
-
-create({
-  qtype: QuestionTypes.SELECT_LIST
-});
-
-_workspaceQuestions.push({
-  type: QuestionTypes.TEXT_INPUT,
+  qtype: QuestionTypes.TEXT_INPUT,
   props: {
-    qid: qid++,
-    label: 'username',
-    placeholder: 'username'
-  }
-});
-
-_workspaceQuestions.push({
-  type: QuestionTypes.PLACEHOLDER,
-  props: {
-    qid: qid++
-  }
-});
-
-_workspaceQuestions.push({
-  type: QuestionTypes.TEXT_INPUT,
-  props: {
-    qid: qid++,
     label: 'password',
     placeholder: 'password',
     type: 'password'
   }
 });
 
-_workspaceQuestions.push({
-  type: QuestionTypes.SELECT_LIST,
-  props: {
-    qid: qid++,
-    label: 'A Selector'
-  }
+create({
+  qtype: QuestionTypes.SELECT_LIST
 });
 
 function __findIndex(qid) {
@@ -97,15 +71,13 @@ function create(data) {
   let index,
     newQuestion = {
       type: data.qtype,
-      props: {
-        qid: data.qid || qid++
-      }
+      props: Object.assign({}, DEFAULT_PROPS[data.qtype], data.props)
     };
 
-  newQuestion.props = Object.assgin({}, DEFAULT_PROPS[newQuestion.type], data.props);
+  if (!newQuestion.props.qid) newQuestion.props.qid = qid++;
 
-  if (data.refQid) {
-    index = __findIndex(data.refQid);
+  if (newQuestion.props.refQid) {
+    index = __findIndex(newQuestion.props.refQid);
     if (index > -1) {
       _workspaceQuestions.splice(index, 0, newQuestion);
     }
@@ -163,6 +135,10 @@ function destroy(qid) {
   }
 }
 
+function updateSidebar(props) {
+
+}
+
 var WorkspaceQuestionStore = Object.assign({}, EventEmitter.prototype, {
   /**
    * Get the entire collection of TODOs.
@@ -172,22 +148,18 @@ var WorkspaceQuestionStore = Object.assign({}, EventEmitter.prototype, {
     return _workspaceQuestions;
   },
 
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
-
   /**
    * @param {function} callback
    */
   addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
+    this.on(QUESTION_CHANGE_EVENT, callback);
   },
 
   /**
    * @param {function} callback
    */
   removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
+    this.removeListener(QUESTION_CHANGE_EVENT, callback);
   }
 });
 
@@ -199,22 +171,23 @@ Dispatcher.register(function(action) {
     case ActionTypes.CREATE_QUESTION:
         if (action.data) {
           create(action.data);
-          WorkspaceQuestionStore.emitChange();
+          WorkspaceQuestionStore.emit(QUESTION_CHANGE_EVENT);
         }
       break;
     case ActionTypes.DELETE_QUESTION:
       if (action.qid) {
         destroy(action.qid);
-        WorkspaceQuestionStore.emitChange();
+        WorkspaceQuestionStore.emit(QUESTION_CHANGE_EVENT);
       }
     case ActionTypes.UPDATE_QUESTION:
       if (action.data) {
         update(action.data);
-        WorkspaceQuestionStore.emitChange();
+        WorkspaceQuestionStore.emit(QUESTION_CHANGE_EVENT);
       }
     case ActionTypes.SELECTED_QUESTION:
       if (action.props) {
-        console.log('props', action.props);
+        updateSidebar(action.props);
+        WorkspaceQuestionStore.emit(SIDEBAR_CHANGE_EVENT);
       }
     default:
       // no op

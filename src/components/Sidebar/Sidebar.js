@@ -7,7 +7,12 @@ import styles from './Sidebar.css';
 @withStyles(styles)
 class Sidebar{
   render() {
-    return <div className="sidebar">Sidebar</div>;
+    return (<div className="sidebar">
+            <h4></h4>
+            <p>
+
+            </p>
+        </div>);
   }
 }
 

@@ -47,18 +47,13 @@ class App {
             qid: -1
           });
 
-          data = {
-            qid: -1,
-            qtype: QuestionTypes[item.textContent],
-            refQid: reference ? reference.dataset.qid : null
-          }
-
           Dispatcher.dispatch({
             actionType: ActionTypes.CREATE_QUESTION,
             data: {
-              qtype: data.qtype,
+              qtype: QuestionTypes[item.textContent],
               props: {
-                qid: -1
+                qid: -1,
+                refQid: reference ? reference.dataset.qid : null
               }
             }
           });
