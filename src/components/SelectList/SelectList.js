@@ -10,7 +10,8 @@ class SelectList extends BaseQuestion {
   render() {
     return (
       <div className="selectlist-question" onClick={this.handleClick}>
-        <select>{this.props.options.map( option => <option>{option}</option>)}</select>
+        <label>{this.props.label}</label>
+        <select>{this.props.options.map( option => <option key={option}>{option}</option>)}</select>
       </div>
     );
   }

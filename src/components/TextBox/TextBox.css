@@ -1,5 +1,7 @@
 /* React Starter Kit | MIT License | http://www.reactstarterkit.com/ */
 
-.textbox-question { }
+.textbox-question {
+	width: 100%;
+}
 .textbox-question-input { }
 .textbox-question-textarea { }

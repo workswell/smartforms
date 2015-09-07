@@ -55,7 +55,12 @@ class App {
 
           Dispatcher.dispatch({
             actionType: ActionTypes.CREATE_QUESTION,
-            data
+            data: {
+              qtype: data.qtype,
+              props: {
+                qid: -1
+              }
+            }
           });
         } else {
           Dispatcher.dispatch({

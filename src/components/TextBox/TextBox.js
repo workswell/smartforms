@@ -26,6 +26,7 @@ class TextBox extends BaseQuestion {
   render() {
     return (
       <div className="textbox-question">
+        <label>{this.props.label}</label>
         {this.props.maxLines > 1 ?
           <textarea {...this.props} className="textbox-question-textarea" ref="input" key="input" rows={this.props.maxLines} /> :
           <div ref="textbox">

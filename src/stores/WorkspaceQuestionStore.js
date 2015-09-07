@@ -14,6 +14,19 @@ import Dispatcher from '../core/Dispatcher';
 import ActionTypes from '../constants/ActionTypes';
 import QuestionTypes from '../constants/QuestionTypes';
 
+const DEFAULT_PROPS = {
+  [QuestionTypes.TEXT_INPUT]: {
+    label: 'TEXT-QUESTION',
+    placeholder: 'TEXT-QUESTION'
+  },
+  [QuestionTypes.PLACEHOLDER]: {
+    label: 'PLACEHOLDER-QUESTION'
+  },
+  [QuestionTypes.SELECT_LIST]: {
+    label: 'SELECT-QUESTION'
+  }
+}
+
 
 let CHANGE_EVENT = 'change';
 
@@ -22,11 +35,28 @@ let qid = 1;
 let _workspaceQuestions = [];
 
 //Set three default questions
+create({
+  qtype: QuestionTypes.TEXT_INPUT
+});
+
+create({
+  qtype: QuestionTypes.PLACEHOLDER
+});
+
+create({
+  qtype: QuestionTypes.TEXT_INPUT
+});
+
+create({
+  qtype: QuestionTypes.SELECT_LIST
+});
+
 _workspaceQuestions.push({
   type: QuestionTypes.TEXT_INPUT,
   props: {
     qid: qid++,
-    label: 'username'
+    label: 'username',
+    placeholder: 'username'
   }
 });
 
@@ -42,7 +72,16 @@ _workspaceQuestions.push({
   props: {
     qid: qid++,
     label: 'password',
+    placeholder: 'password',
     type: 'password'
+  }
+});
+
+_workspaceQuestions.push({
+  type: QuestionTypes.SELECT_LIST,
+  props: {
+    qid: qid++,
+    label: 'A Selector'
   }
 });
 
@@ -58,6 +97,8 @@ function create(data) {
         qid: data.qid || qid++
       }
     };
+
+  newQuestion.props = Object.assgin({}, DEFAULT_PROPS[newQuestion.type], data.props);
 
   if (data.refQid) {
     index = _workspaceQuestions.findIndex(item => item.props.qid == data.refQid);
@@ -115,17 +156,6 @@ function destroy(qid) {
   if (index > -1) {
     _workspaceQuestions.splice(index, 1);
     //console.log('Store.destroy');
-  }
-}
-
-/**
- * Delete all the completed TODO items.
- */
-function destroyCompleted() {
-  for (var id in _todos) {
-    if (_todos[id].complete) {
-      destroy(id);
-    }
   }
 }
 
