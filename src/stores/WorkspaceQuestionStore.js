@@ -85,6 +85,10 @@ _workspaceQuestions.push({
   }
 });
 
+function __findIndex(qid) {
+  return _workspaceQuestions.findIndex(item => item.props.qid == qid);
+}
+
 /**
  * Create a TODO item.
  * @param  {string} text The content of the TODO
@@ -101,7 +105,7 @@ function create(data) {
   newQuestion.props = Object.assgin({}, DEFAULT_PROPS[newQuestion.type], data.props);
 
   if (data.refQid) {
-    index = _workspaceQuestions.findIndex(item => item.props.qid == data.refQid);
+    index = __findIndex(data.refQid);
     if (index > -1) {
       _workspaceQuestions.splice(index, 0, newQuestion);
     }
@@ -118,15 +122,15 @@ function create(data) {
  */
 function update(data) {
   if (data.qid === -1) {
-    let index = _workspaceQuestions.findIndex(item => item.props.qid === -1);
+    let index = __findIndex(-1);
     if (index > -1) _workspaceQuestions[index].props.qid = qid++;
   } else {
-    let index = _workspaceQuestions.findIndex(item => item.props.qid === +data.qid);
+    let index = __findIndex(+data.qid);
     if (index > -1) {
       let item = _workspaceQuestions.splice(index, 1);
       if (item.length === 1) {
         if (data.refQid) {
-          index = _workspaceQuestions.findIndex(item => item.props.qid === +data.refQid);
+          index = __findIndex(+data.refQid);
           if (index > -1) _workspaceQuestions.splice(index, 0, item[0]);
         } else {
           _workspaceQuestions.push(item[0]);
@@ -152,7 +156,7 @@ function updateAll(updates) {
  * @param  {string} id
  */
 function destroy(qid) {
-  let index = _workspaceQuestions.findIndex(item => item.props.qid == qid);
+  let index = __findIndex(qid);
   if (index > -1) {
     _workspaceQuestions.splice(index, 1);
     //console.log('Store.destroy');
