@@ -19,7 +19,7 @@ class BaseQuestion extends React.Component {
 
   handleClick() {
     Dispatcher.dispatch({
-      actionType: ActionTypes.SELECTED_QUESTION,
+      actionType: ActionTypes.CHANGE_SELECTED_QUESTION,
       props: this.props
     });
   }

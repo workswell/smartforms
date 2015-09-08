@@ -11,6 +11,7 @@
 
 import { EventEmitter } from 'events';
 import Dispatcher from '../core/Dispatcher';
+import EventTypes from '../constants/EventTypes';
 import ActionTypes from '../constants/ActionTypes';
 import QuestionTypes from '../constants/QuestionTypes';
 
@@ -28,11 +29,13 @@ const DEFAULT_PROPS = {
 }
 
 
-let QUESTION_CHANGE_EVENT = 'question-change',
-  SIDEBAR_CHANGE_EVENT = 'sidebar-change',
-  qid = 1,
-  _workspaceQuestions = [];
+let qid = 1,
+  _workspaceQuestions = [],
+  _selectedQuestion;
 
+//***********************************************************
+//Bootstrap data (WILL BE MOVED OUT FROM STORE)             *
+//***********************************************************
 //Set three default questions
 create({
   qtype: QuestionTypes.TEXT_INPUT,
@@ -58,6 +61,11 @@ create({
 create({
   qtype: QuestionTypes.SELECT_LIST
 });
+
+_selectedQuestion = _workspaceQuestions[0];
+//***********************************************************
+//Bootstrap data (WILL BE MOVED OUT FROM STORE)             *
+//***********************************************************
 
 function __findIndex(qid) {
   return _workspaceQuestions.findIndex(item => item.props.qid == qid);
@@ -113,17 +121,6 @@ function update(data) {
 }
 
 /**
- * Update all of the TODO items with the same object.
- * @param  {object} updates An object literal containing only the data to be
- *     updated.
- */
-function updateAll(updates) {
-  for (var id in _todos) {
-    update(id, updates);
-  }
-}
-
-/**
  * Delete a TODO item.
  * @param  {string} id
  */
@@ -139,27 +136,31 @@ function updateSidebar(props) {
 
 }
 
-var WorkspaceQuestionStore = Object.assign({}, EventEmitter.prototype, {
+var WorkspaceStore = Object.assign({}, EventEmitter.prototype, {
   /**
    * Get the entire collection of TODOs.
    * @return {object}
    */
-  getAll: function() {
+  getQuestions: function() {
     return _workspaceQuestions;
+  },
+
+  getSidebarQuestion: function () {
+    return _selectedQuestion;
   },
 
   /**
    * @param {function} callback
    */
   addChangeListener: function(callback) {
-    this.on(QUESTION_CHANGE_EVENT, callback);
+    this.on(Eventypes.QUESTION_CHANGE_EVENT, callback);
   },
 
   /**
    * @param {function} callback
    */
   removeChangeListener: function(callback) {
-    this.removeListener(QUESTION_CHANGE_EVENT, callback);
+    this.removeListener(Eventypes.QUESTION_CHANGE_EVENT, callback);
   }
 });
 
@@ -171,27 +172,27 @@ Dispatcher.register(function(action) {
     case ActionTypes.CREATE_QUESTION:
         if (action.data) {
           create(action.data);
-          WorkspaceQuestionStore.emit(QUESTION_CHANGE_EVENT);
+          WorkspaceStore.emit(Eventypes.QUESTION_CHANGE_EVENT);
         }
       break;
     case ActionTypes.DELETE_QUESTION:
       if (action.qid) {
         destroy(action.qid);
-        WorkspaceQuestionStore.emit(QUESTION_CHANGE_EVENT);
+        WorkspaceStore.emit(Eventypes.QUESTION_CHANGE_EVENT);
       }
     case ActionTypes.UPDATE_QUESTION:
       if (action.data) {
         update(action.data);
-        WorkspaceQuestionStore.emit(QUESTION_CHANGE_EVENT);
+        WorkspaceStore.emit(Eventypes.QUESTION_CHANGE_EVENT);
       }
-    case ActionTypes.SELECTED_QUESTION:
+    case ActionTypes.CHANGE_SELECTED_QUESTION:
       if (action.props) {
         updateSidebar(action.props);
-        WorkspaceQuestionStore.emit(SIDEBAR_CHANGE_EVENT);
+        WorkspaceStore.emit(Eventypes.SIDEBAR_CHANGE_EVENT);
       }
     default:
       // no op
   }
 });
 
-module.exports = WorkspaceQuestionStore;
+module.exports = WorkspaceStore;
