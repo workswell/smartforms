@@ -24,7 +24,8 @@ const DEFAULT_PROPS = {
     label: 'PLACEHOLDER-QUESTION'
   },
   [QuestionTypes.SELECT_LIST]: {
-    label: 'SELECT-QUESTION'
+    label: 'SELECT-QUESTION',
+    options: ['Option One', 'Option Two', 'Option Three']
   }
 }
 
@@ -133,7 +134,10 @@ function destroy(qid) {
 }
 
 function updateSidebar(props) {
-
+  let index = __findIndex(+props.qid);
+  if (index > -1) {
+    _selectedQuestion = _workspaceQuestions[index];
+  }
 }
 
 var WorkspaceStore = Object.assign({}, EventEmitter.prototype, {
@@ -153,14 +157,14 @@ var WorkspaceStore = Object.assign({}, EventEmitter.prototype, {
    * @param {function} callback
    */
   addChangeListener: function(callback) {
-    this.on(Eventypes.QUESTION_CHANGE_EVENT, callback);
+    this.on(EventTypes.QUESTION_CHANGE_EVENT, callback);
   },
 
   /**
    * @param {function} callback
    */
   removeChangeListener: function(callback) {
-    this.removeListener(Eventypes.QUESTION_CHANGE_EVENT, callback);
+    this.removeListener(EventTypes.QUESTION_CHANGE_EVENT, callback);
   }
 });
 
@@ -172,23 +176,23 @@ Dispatcher.register(function(action) {
     case ActionTypes.CREATE_QUESTION:
         if (action.data) {
           create(action.data);
-          WorkspaceStore.emit(Eventypes.QUESTION_CHANGE_EVENT);
+          WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
         }
       break;
     case ActionTypes.DELETE_QUESTION:
       if (action.qid) {
         destroy(action.qid);
-        WorkspaceStore.emit(Eventypes.QUESTION_CHANGE_EVENT);
+        WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
       }
     case ActionTypes.UPDATE_QUESTION:
       if (action.data) {
         update(action.data);
-        WorkspaceStore.emit(Eventypes.QUESTION_CHANGE_EVENT);
+        WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
       }
     case ActionTypes.CHANGE_SELECTED_QUESTION:
       if (action.props) {
         updateSidebar(action.props);
-        WorkspaceStore.emit(Eventypes.SIDEBAR_CHANGE_EVENT);
+        WorkspaceStore.emit(EventTypes.SIDEBAR_CHANGE_EVENT);
       }
     default:
       // no op

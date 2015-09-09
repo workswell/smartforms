@@ -5,47 +5,58 @@ import withStyles from '../../decorators/withStyles';
 import styles from './Sidebar.css';
 import EventTypes from '../../constants/EventTypes';
 import WorkspaceStore from '../../stores/WorkspaceStore';
+import TextBox from '../TextBox';
 
 function getSidebarQuestionState () {
   return WorkspaceStore.getSidebarQuestion();
 }
 
+const EXCLUDED_PROPS = ['refQid'];
+const TEXTBOX_PROPS = ['label', 'placeholder'];
+
 @withStyles(styles)
-class Sidebar extends React.Component{
-	 constructor(props) {
+class Sidebar extends React.Component {
+  constructor(props) {
     super(props);
-    this.state = {
-      question: getSidebarQuestionState(),
-    };
+    this.state = getSidebarQuestionState();
 
     this._onQuestionChange = this._onQuestionChange.bind(this);
+    this._onTextboxChange = this._onTextboxChange.bind(this);
   }
 
   componentDidMount() {
-    WorkspaceStore.addChangeListener(this._onQuestionChange);
+    WorkspaceStore.on(EventTypes.SIDEBAR_CHANGE_EVENT, this._onQuestionChange);
   }
 
   componentWillUnmount() {
-    WorkspaceStore.removeListener(Eventypes.SIDEBAR_CHANGE_EVENT, this._onQuestionChange);
+    WorkspaceStore.removeListener(EventTypes.SIDEBAR_CHANGE_EVENT, this._onQuestionChange);
   }
 
   _onQuestionChange() {
-    this.setState({
-      question: getSidebarQuestionState()
-    });
+    this.setState(getSidebarQuestionState());
+  }
+
+  _onTextboxChange() {
+
   }
 
   render() {
-  	var items = Object.keys(this.state.props).forEach((item)=>{
-  		return <li>{item}({ this.state.props[item]})</li>
+  	let item,
+      items = Object.keys(this.state.props).filter((key)=> {
+      return EXCLUDED_PROPS.indexOf(key) === -1;
+    }).map((key)=>{
+      if (TEXTBOX_PROPS.indexOf(key) > -1) {
+        item = <TextBox qid="-1" label={key} value={this.state.props[key]} onChange={this._onTextboxChange}/>
+      } else {
+        item = `${key}(${this.state.props[key]})`;
+      }
+  		return <li>{item}</li>
   	});
     return (<div className="sidebar">
             <h4>{this.state.type}</h4>
-            <p>
             	<ul>
             		{items}
             	</ul>
-            </p>
         </div>);
   }
 }
