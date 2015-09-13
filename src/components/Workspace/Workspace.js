@@ -4,7 +4,6 @@ import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import styles from './Workspace.css';
 import withStyles from '../../decorators/withStyles';
-import Pointer from '../Pointer';
 import WorkspaceQuestionList from '../WorkspaceQuestionList';
 import WorkspaceStore from '../../stores/WorkspaceStore';
 import Dispatcher from '../../core/Dispatcher';

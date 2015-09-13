@@ -18,7 +18,14 @@ class WorkspaceQuestionList {
     list: PropTypes.array.isRequired
   }
 
-  handleClick(qid) {
+  handleClick(props) {
+    Dispatcher.dispatch({
+      actionType: ActionTypes.CHANGE_SELECTED_QUESTION,
+      props: props
+    });
+  }
+
+  handleActionClick(qid) {
     Dispatcher.dispatch({
       actionType: ActionTypes.DELETE_QUESTION,
       qid
@@ -43,10 +50,10 @@ class WorkspaceQuestionList {
         break;
       }
 
-      return (<div className={'question-wrapper ' + (question.props.qid == -1 ? 'gu-transit' : '')} data-qid={question.props.qid} key={question.props.qid}>
+      return (<div className={'question-wrapper ' + (question.props.qid == -1 ? 'gu-transit' : '')} data-qid={question.props.qid} key={question.props.qid} onClick={this.handleClick.bind(this, question.props)}>
                 <Handler/>
                 {control}
-                <Actions handleClick={this.handleClick} {...question.props}/>
+                <Actions handleClick={this.handleActionClick.bind(this, question.props.qid)}/>
               </div>);
     });
 

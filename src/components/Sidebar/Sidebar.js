@@ -6,6 +6,8 @@ import styles from './Sidebar.css';
 import EventTypes from '../../constants/EventTypes';
 import WorkspaceStore from '../../stores/WorkspaceStore';
 import TextBox from '../TextBox';
+import ActionTypes from '../../constants/ActionTypes';
+import Dispatcher from '../../core/Dispatcher';
 
 function getSidebarQuestionState () {
   return WorkspaceStore.getSidebarQuestion();
@@ -20,8 +22,9 @@ class Sidebar extends React.Component {
     super(props);
     this.state = getSidebarQuestionState();
 
-    this._onQuestionChange = this._onQuestionChange.bind(this);
-    this._onTextboxChange = this._onTextboxChange.bind(this);
+    ['_onQuestionChange', '_onTextboxChange'].forEach((func)=>{
+      this[func] = this[func].bind(this);
+    });
   }
 
   componentDidMount() {
@@ -36,8 +39,18 @@ class Sidebar extends React.Component {
     this.setState(getSidebarQuestionState());
   }
 
-  _onTextboxChange() {
+  _onTextboxChange(e) {
+    let cloned = JSON.parse(JSON.stringify(this.state));
+    cloned.props['label'] = e.target.value;
 
+    this.setState({
+      props: cloned.props
+    }, ()=>{
+      Dispatcher.dispatch({
+        actionType: ActionTypes.UPDATE_SELECTED_QUESTION,
+        props: cloned.props
+      });
+    })
   }
 
   render() {

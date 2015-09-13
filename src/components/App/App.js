@@ -59,7 +59,7 @@ class App {
           });
         } else {
           Dispatcher.dispatch({
-            actionType: ActionTypes.UPDATE_QUESTION,
+            actionType: ActionTypes.UPDATE_QUESTION_POSITION,
             data: {
               qid: item.dataset.qid,
               refQid: reference ? reference.dataset.qid : null
@@ -71,7 +71,7 @@ class App {
 
     drake.on('drop', ()=>{
       Dispatcher.dispatch({
-        actionType: ActionTypes.UPDATE_QUESTION,
+        actionType: ActionTypes.UPDATE_QUESTION_POSITION,
         data: {
           qid: -1
         }

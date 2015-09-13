@@ -96,12 +96,12 @@ function create(data) {
 }
 
 /**
- * Update a TODO item.
+ * UpdatePosition a TODO item.
  * @param  {string} id
  * @param {object} updates An object literal containing only the data to be
  *     updated.
  */
-function update(data) {
+function updatePosition(data) {
   if (data.qid === -1) {
     let index = __findIndex(-1);
     if (index > -1) _workspaceQuestions[index].props.qid = qid++;
@@ -138,6 +138,10 @@ function updateSidebar(props) {
   if (index > -1) {
     _selectedQuestion = _workspaceQuestions[index];
   }
+}
+
+function updateSelectedQuestion (props) {
+  Object.assign(_selectedQuestion.props, props);
 }
 
 var WorkspaceStore = Object.assign({}, EventEmitter.prototype, {
@@ -184,15 +188,20 @@ Dispatcher.register(function(action) {
         destroy(action.qid);
         WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
       }
-    case ActionTypes.UPDATE_QUESTION:
+    case ActionTypes.UPDATE_QUESTION_POSITION:
       if (action.data) {
-        update(action.data);
+        updatePosition(action.data);
         WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
       }
     case ActionTypes.CHANGE_SELECTED_QUESTION:
       if (action.props) {
         updateSidebar(action.props);
         WorkspaceStore.emit(EventTypes.SIDEBAR_CHANGE_EVENT);
+      }
+    case ActionTypes.UPDATE_SELECTED_QUESTION:
+      if (action.props) {
+        updateSelectedQuestion(action.props);
+        WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
       }
     default:
       // no op

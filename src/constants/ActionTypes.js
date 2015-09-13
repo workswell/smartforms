@@ -5,6 +5,7 @@ import keyMirror from 'fbjs/lib/keyMirror';
 export default keyMirror({
   CREATE_QUESTION: null,
   DELETE_QUESTION: null,
-  UPDATE_QUESTION: null,
-  CHANGE_SELECTED_QUESTION: null
+  UPDATE_QUESTION_POSITION: null,
+  CHANGE_SELECTED_QUESTION: null,
+  UPDATE_SELECTED_QUESTION: null,
 });

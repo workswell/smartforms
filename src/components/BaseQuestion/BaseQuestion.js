@@ -8,20 +8,12 @@ import ActionTypes from '../../constants/ActionTypes';
 class BaseQuestion extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
   }
 
   componentWillUnmount() {
-  }
-
-  handleClick() {
-    Dispatcher.dispatch({
-      actionType: ActionTypes.CHANGE_SELECTED_QUESTION,
-      props: this.props
-    });
   }
 
   _bind(...methods) {
