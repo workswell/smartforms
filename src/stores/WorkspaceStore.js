@@ -32,7 +32,8 @@ const DEFAULT_PROPS = {
 
 let qid = 1,
   _workspaceQuestions = [],
-  _selectedQuestion;
+  _selectedQuestion,
+  _appState;
 
 //***********************************************************
 //Bootstrap data (WILL BE MOVED OUT FROM STORE)             *
@@ -64,6 +65,10 @@ create({
 });
 
 _selectedQuestion = _workspaceQuestions[0];
+
+_appState = {
+  sideBarOpen: false
+};
 //***********************************************************
 //Bootstrap data (WILL BE MOVED OUT FROM STORE)             *
 //***********************************************************
@@ -133,10 +138,12 @@ function destroy(qid) {
   }
 }
 
-function updateSidebar(props) {
-  let index = __findIndex(+props.qid);
+function updateSidebar(qid) {
+  let index = __findIndex(qid);
   if (index > -1) {
     _selectedQuestion = _workspaceQuestions[index];
+  } else {
+    _selectedQuestion = null;
   }
 }
 
@@ -144,7 +151,14 @@ function updateSelectedQuestion (props) {
   Object.assign(_selectedQuestion.props, props);
 }
 
+function updateAppState () {
+  _appState.sideBarOpen = true;
+}
+
 var WorkspaceStore = Object.assign({}, EventEmitter.prototype, {
+  getAppState: function () {
+    return _appState;
+  },
   /**
    * Get the entire collection of TODOs.
    * @return {object}
@@ -187,22 +201,39 @@ Dispatcher.register(function(action) {
       if (action.qid) {
         destroy(action.qid);
         WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
+        updateSidebar(action.qid);
+        if (!_selectedQuestion) {
+          _appState.sideBarOpen = false;
+          WorkspaceStore.emit(EventTypes.APP_STATE_EVENT);
+        }
       }
+      break;
     case ActionTypes.UPDATE_QUESTION_POSITION:
       if (action.data) {
         updatePosition(action.data);
         WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
       }
+      break;
     case ActionTypes.CHANGE_SELECTED_QUESTION:
       if (action.props) {
-        updateSidebar(action.props);
+        updateSidebar(+action.props.qid);
         WorkspaceStore.emit(EventTypes.SIDEBAR_CHANGE_EVENT);
       }
+      break;
     case ActionTypes.UPDATE_SELECTED_QUESTION:
       if (action.props) {
         updateSelectedQuestion(action.props);
-        WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);
+        WorkspaceStore.emit(EventTypes.QUESTION_CHANGE_EVENT);        
       }
+      break;
+    case ActionTypes.OPEN_SIDEBAR:
+      _appState.sideBarOpen = true;
+      WorkspaceStore.emit(EventTypes.APP_STATE_EVENT);
+      break;
+    case ActionTypes.CLOSE_SIDEBAR:
+      _appState.sideBarOpen = false;
+      WorkspaceStore.emit(EventTypes.APP_STATE_EVENT);
+      break;
     default:
       // no op
   }

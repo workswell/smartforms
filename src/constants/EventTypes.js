@@ -4,5 +4,6 @@ import keyMirror from 'fbjs/lib/keyMirror';
 
 export default keyMirror({
   QUESTION_CHANGE_EVENT: null,
-  SIDEBAR_CHANGE_EVENT: null
+  SIDEBAR_CHANGE_EVENT: null,
+  APP_STATE_EVENT: null
 });

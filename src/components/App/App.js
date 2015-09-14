@@ -12,23 +12,31 @@ import Footer from '../Footer';
 import Sidebar from '../Sidebar';
 import QuestionType from'../QuestionType';
 import QuestionTypes from '../../constants/QuestionTypes';
+import EventTypes from '../../constants/EventTypes';
 import ActionTypes from '../../constants/ActionTypes';
 import Dispatcher from '../../core/Dispatcher';
+import WorkspaceStore from '../../stores/WorkspaceStore';
+
+function getAppState () {
+  return WorkspaceStore.getAppState();
+}
 
 @withContext
 @withStyles(styles)
-class App {
-
-  static propTypes = {
-    children: PropTypes.element.isRequired,
-    error: PropTypes.object
-  };
+class App extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = getAppState();
+    this._onStateChange = this._onStateChange.bind(this);
+  }
 
   componentDidMount() {
+    WorkspaceStore.on(EventTypes.APP_STATE_EVENT, this._onStateChange);
+
     let data,
       drake = dragula({
       containers: [findDOMNode(this.refs.questionList), document.getElementsByClassName('workspace-question-list')[0]],
-      moves: function (el, source, handle) {
+      moves(el, source, handle) {
         if (source.className === 'workspace-question-list') {
           drake.copy = false;
           return handle.className === 'question-wrapper__handler';
@@ -93,8 +101,14 @@ class App {
     });
   }
 
+  componentWillUnmount() {
+    WorkspaceStore.removeListener(EventTypes.APP_STATE_EVENT, this._onStateChange);
+  }
+
   render() {
-    let questionTypes = Object.keys(QuestionTypes).map((questionType) => <QuestionType key={questionType} typeName={questionType} />);
+    let contentClassname = this.state.sideBarOpen ? 'pure-u-3-5' : 'pure-u-4-5',
+      sideBarClassname = this.state.sideBarOpen ? 'pure-u-1-5' : 'hidden';
+
     return !this.props.error ? (
       <div>
         <div className="pure-g">
@@ -102,12 +116,12 @@ class App {
             <div className="pure-menu">
               <span className="pure-menu-heading">Question Type</span>
               <ul className="pure-menu-list" ref="questionList">
-                {questionTypes}
+                {this._getQuestionTypes()}
               </ul>
             </div>
           </div>
-          <div className="page-content pure-u-3-5">{this.props.children}</div>
-          <div className="pure-u-1-5">
+          <div className={"page-content " + contentClassname}>{this.props.children}</div>
+          <div className={"page-sidebar " + sideBarClassname}>
             <Sidebar/>
           </div>
         </div>
@@ -116,6 +130,18 @@ class App {
     ) : this.props.children;
   }
 
+  _getQuestionTypes() {
+    return Object.keys(QuestionTypes).map((questionType) => <QuestionType key={questionType} typeName={questionType} />);
+  }
+
+  _onStateChange() {
+    this.setState(getAppState());
+  }
 }
+
+App.propTypes = {
+  children: PropTypes.element.isRequired,
+  error: PropTypes.object
+};
 
 export default App;

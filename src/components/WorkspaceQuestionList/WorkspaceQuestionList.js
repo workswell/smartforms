@@ -23,6 +23,10 @@ class WorkspaceQuestionList {
       actionType: ActionTypes.CHANGE_SELECTED_QUESTION,
       props: props
     });
+
+    Dispatcher.dispatch({
+      actionType: ActionTypes.OPEN_SIDEBAR
+    });
   }
 
   handleActionClick(qid) {
@@ -50,9 +54,9 @@ class WorkspaceQuestionList {
         break;
       }
 
-      return (<div className={'question-wrapper ' + (question.props.qid == -1 ? 'gu-transit' : '')} data-qid={question.props.qid} key={question.props.qid} onClick={this.handleClick.bind(this, question.props)}>
+      return (<div className={'question-wrapper ' + (question.props.qid == -1 ? 'gu-transit' : '')} data-qid={question.props.qid} key={question.props.qid}>
                 <Handler/>
-                {control}
+                <div className="question-wrapper__question" onClick={this.handleClick.bind(this, question.props)}>{control}</div>
                 <Actions handleClick={this.handleActionClick.bind(this, question.props.qid)}/>
               </div>);
     });

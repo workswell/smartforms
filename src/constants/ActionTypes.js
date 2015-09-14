@@ -8,4 +8,6 @@ export default keyMirror({
   UPDATE_QUESTION_POSITION: null,
   CHANGE_SELECTED_QUESTION: null,
   UPDATE_SELECTED_QUESTION: null,
+  OPEN_SIDEBAR: null,
+  CLOSE_SIDEBAR: null
 });

@@ -32,6 +32,16 @@ class Workspace extends React.Component{
     WorkspaceStore.removeChangeListener(this._onQuestionChange);
   }
 
+  handleClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.target.id === 'workspace') {
+      Dispatcher.dispatch({
+        actionType: ActionTypes.CLOSE_SIDEBAR
+      });
+    };
+  }
+
   _onQuestionChange() {
     this.setState({
       questions: getWorkspaceQuestionState()
@@ -40,7 +50,7 @@ class Workspace extends React.Component{
 
   render() {
     return (
-      <div id="workspace">
+      <div id="workspace" onClick={this.handleClick}>
         <WorkspaceQuestionList list={this.state.questions} />
       </div>
     );
