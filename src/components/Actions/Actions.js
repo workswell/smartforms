@@ -15,7 +15,9 @@ class Actions{
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {
+  handleClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
     this.props.handleClick(this.props.qid);
   }
 

@@ -9,7 +9,7 @@ import styles from './SelectList.css';
 class SelectList extends BaseQuestion {
   render() {
     return (
-      <div className="selectlist-question" onClick={this.handleClick}>
+      <div className="selectlist-question">
         <label>{this.props.label}</label>
         <select>{this.props.options.map( option => <option key={option}>{option}</option>)}</select>
       </div>

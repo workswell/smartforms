@@ -6,6 +6,11 @@
 
 .question-wrapper {
     display: flex;
+    justify-content: space-between;
     border: 1px solid var(--gray-light);
     margin-bottom: 5px;
+}
+
+.question-wrapper__question {
+    width: 100%;
 }

@@ -57,7 +57,7 @@ class WorkspaceQuestionList {
       return (<div className={'question-wrapper ' + (question.props.qid == -1 ? 'gu-transit' : '')} data-qid={question.props.qid} key={question.props.qid}>
                 <Handler/>
                 <div className="question-wrapper__question" onClick={this.handleClick.bind(this, question.props)}>{control}</div>
-                <Actions handleClick={this.handleActionClick.bind(this, question.props.qid)}/>
+                <Actions handleClick={this.handleActionClick} qid={question.props.qid}/>
               </div>);
     });
 

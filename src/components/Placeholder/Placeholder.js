@@ -8,7 +8,7 @@ import styles from './Placeholder.css';
 @withStyles(styles)
 class Placeholder extends BaseQuestion {
   render() {
-    return <div className="placeholder-question" onClick={this.handleClick}>Placeholder</div>;
+    return <div className="placeholder-question">{this.props.label}</div>;
   }
 }
 

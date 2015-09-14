@@ -41,7 +41,7 @@ class Sidebar extends React.Component {
 
   _onTextboxChange(e) {
     let cloned = JSON.parse(JSON.stringify(this.state));
-    cloned.props['label'] = e.target.value;
+    cloned.props[e.target.name] = e.target.value;
 
     this.setState({
       props: cloned.props
