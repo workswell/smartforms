@@ -6,6 +6,7 @@ import styles from './Sidebar.css';
 import EventTypes from '../../constants/EventTypes';
 import WorkspaceStore from '../../stores/WorkspaceStore';
 import TextBox from '../TextBox';
+import SortableList from '../SortableList';
 import ActionTypes from '../../constants/ActionTypes';
 import Dispatcher from '../../core/Dispatcher';
 
@@ -15,6 +16,7 @@ function getSidebarQuestionState () {
 
 const EXCLUDED_PROPS = ['refQid'];
 const TEXTBOX_PROPS = ['label', 'placeholder'];
+const SORTABLELIST_PROPS = ['options'];
 
 @withStyles(styles)
 class Sidebar extends React.Component {
@@ -59,11 +61,13 @@ class Sidebar extends React.Component {
       return EXCLUDED_PROPS.indexOf(key) === -1;
     }).map((key)=>{
       if (TEXTBOX_PROPS.indexOf(key) > -1) {
-        item = <TextBox qid="-1" label={key} value={this.state.props[key]} onChange={this._onTextboxChange}/>
+        item = <TextBox qid={-1} label={key} value={this.state.props[key]} onChange={this._onTextboxChange}/>
+      } else if (SORTABLELIST_PROPS.indexOf(key) > -1) {
+        item = <SortableList list={this.state.props[key]}/>
       } else {
         item = `${key}(${this.state.props[key]})`;
       }
-  		return <li>{item}</li>
+  		return <li key={key}>{item}</li>
   	});
     return (<div className="sidebar">
             <h4>{this.state.type}</h4>
