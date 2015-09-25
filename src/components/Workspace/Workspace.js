@@ -19,9 +19,11 @@ class Workspace extends React.Component{
     super(props);
     this.state = {
       questions: getWorkspaceQuestionState(),
+      editMode: true
     };
 
     this._onQuestionChange = this._onQuestionChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +42,15 @@ class Workspace extends React.Component{
         actionType: ActionTypes.CLOSE_SIDEBAR
       });
     };
+
+    if (e.target.tagName === 'BUTTON' && e.target.name === 'view') {
+      Dispatcher.dispatch({
+        actionType: ActionTypes.CLOSE_SIDEBAR
+      });
+      this.setState({
+        editMode: !this.state.editMode
+      });
+    }
   }
 
   _onQuestionChange() {
@@ -49,9 +60,14 @@ class Workspace extends React.Component{
   }
 
   render() {
+    let main = this.state.editMode ? <WorkspaceQuestionList list={this.state.questions} /> : <div></div>;
     return (
       <div id="workspace" onClick={this.handleClick}>
-        <WorkspaceQuestionList list={this.state.questions} />
+        <ul className="workspace-nav">
+          <li className="workspace-nav-item"><button type="button" name="view" className={'pure-button ' + (this.state.editMode?'pure-button-disabled':'')}>Editview</button></li>
+          <li className="workspace-nav-item"><button type="button" name="view" className={'pure-button ' + (this.state.editMode?'':'pure-button-disabled')}>Preview</button></li>
+        </ul>        
+        {main}
       </div>
     );
   }
